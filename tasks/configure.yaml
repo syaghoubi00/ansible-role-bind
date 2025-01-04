@@ -1,0 +1,6 @@
+- name: Add named.conf
+  ansible.builtin.copy:
+    src: "{{ ansible_os_family }}.conf"
+    dest: /etc/named.conf
+    mode: "0640"
+    backup: true

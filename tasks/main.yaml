@@ -12,3 +12,6 @@
   ansible.builtin.package:
     name: "{{ bind_package_name }}"
     state: present
+
+- name: Configure Bind
+  ansible.builtin.include_tasks: configure.yaml
