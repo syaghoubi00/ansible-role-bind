@@ -1,0 +1,11 @@
+- name: Run named-checkconf
+  ansible.builtin.command: named-checkconf
+  register: config_check
+  changed_when: false
+  ignore_errors: true
+  no_log: true
+
+- name: Report the config error
+  ansible.builtin.fail:
+    msg: "There was an error in the named.conf file: {{ config_check.stdout }}"
+  when: config_check.rc != 0

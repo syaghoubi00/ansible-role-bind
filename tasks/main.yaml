@@ -15,3 +15,6 @@
 
 - name: Configure Bind
   ansible.builtin.include_tasks: configure.yaml
+
+- name: Validate config
+  ansible.builtin.include_tasks: validate.yaml
