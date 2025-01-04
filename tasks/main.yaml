@@ -21,3 +21,9 @@
 
 - name: Open up firewall
   ansible.builtin.include_tasks: firewall.yaml
+
+- name: Start Bind
+  ansible.builtin.systemd_service:
+    name: named
+    state: started
+    enabled: true
