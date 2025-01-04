@@ -12,7 +12,7 @@ None.
 
 ## Dependencies
 
-None.
+`ansible.posix.firewalld`: For opening the CoreDNS port with `firewalld`
 
 ## Example Playbook
 
