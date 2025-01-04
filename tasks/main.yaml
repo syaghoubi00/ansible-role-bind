@@ -7,3 +7,8 @@
         - "{{ ansible_os_family }}.yaml"
         - default.yaml
       paths: "vars"
+
+- name: Install Bind
+  ansible.builtin.package:
+    name: "{{ bind_package_name }}"
+    state: present
