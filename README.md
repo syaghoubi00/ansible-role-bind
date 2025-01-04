@@ -2,6 +2,10 @@
 
 An Ansible role to install [Bind9](https://www.isc.org/bind/) ([Gitlab](https://gitlab.isc.org/isc-projects/bind9))
 
+## Platforms
+
+- RHEL 9
+
 ## Requirements
 
 None.
