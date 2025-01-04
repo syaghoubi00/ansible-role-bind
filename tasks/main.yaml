@@ -26,7 +26,4 @@
   ansible.builtin.include_tasks: resolve-port-conflict.yaml
 
 - name: Start Bind
-  ansible.builtin.systemd_service:
-    name: named
-    state: started
-    enabled: true
+  ansible.builtin.include_tasks: start-service.yaml

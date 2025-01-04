@@ -1,0 +1,11 @@
+- name: Start Bind service
+  ansible.builtin.systemd_service:
+    name: named
+    state: started
+    enabled: true
+
+- name: Restart Bind service if config changed
+  ansible.builtin.systemd_service:
+    name: named
+    state: restarted
+  when: named_conf.changed
