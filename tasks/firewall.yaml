@@ -1,0 +1,45 @@
+# TODO: Do port based instead of service based
+# TODO: Add ufw
+---
+- name: Get list of installed packages
+  ansible.builtin.package_facts:
+
+- name: Get status of services
+  ansible.builtin.service_facts:
+
+- name: Open DNS port with firewalld
+  ansible.posix.firewalld:
+    service: dns
+    permanent: true
+    state: enabled
+  when:
+    - "'firewalld' in ansible_facts.packages"
+    - ansible_facts.services['firewalld.service'].state == 'running'
+# NOTE: Not using firewalld module
+# - name: Open DNS ports - firewalld
+#   when:
+#     - "'firewalld' in ansible_facts.packages"
+#     - ansible_facts.services['firewalld.service'].state == 'running'
+#   block:
+#     - name: Check if DNS TCP port is open
+#       ansible.builtin.command: firewall-cmd --query-port=53/tcp
+#       register: dns_tcp_status
+#       changed_when: false
+#       failed_when: false
+#       check_mode: false
+#
+#     - name: Check if DNS UDP port is open
+#       ansible.builtin.command: firewall-cmd --query-port=53/udp
+#       register: dns_udp_status
+#       changed_when: false
+#       failed_when: false
+#       check_mode: false
+#
+#     - name: Open DNS ports if needed (firewalld)
+#       ansible.builtin.command: "{{ item }}"
+#       with_items:
+#         - firewall-cmd --permanent --add-port=53/tcp
+#         - firewall-cmd --permanent --add-port=53/udp
+#         - firewall-cmd --reload
+#       when:
+#         - dns_tcp_status.rc != 0 or dns_udp_status.rc != 0
