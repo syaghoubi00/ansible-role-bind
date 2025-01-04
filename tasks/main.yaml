@@ -22,6 +22,9 @@
 - name: Open up firewall
   ansible.builtin.include_tasks: firewall.yaml
 
+- name: Resolve any conflicting ports
+  ansible.builtin.include_tasks: resolve-port-conflict.yaml
+
 - name: Start Bind
   ansible.builtin.systemd_service:
     name: named
