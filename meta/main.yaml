@@ -1,3 +1,5 @@
+collections:
+  - ansible.posix
 dependencies: []
 galaxy_info:
   author: syaghoubi00
