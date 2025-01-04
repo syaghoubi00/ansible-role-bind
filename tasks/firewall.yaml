@@ -4,8 +4,9 @@
 - name: Get list of installed packages
   ansible.builtin.package_facts:
 
-- name: Get status of services
-  ansible.builtin.service_facts:
+# NOTE: Not needed while using module
+# - name: Get status of services
+#   ansible.builtin.service_facts:
 
 - name: Open DNS port with firewalld
   ansible.posix.firewalld:
@@ -14,7 +15,7 @@
     state: enabled
   when:
     - "'firewalld' in ansible_facts.packages"
-    - ansible_facts.services['firewalld.service'].state == 'running'
+    # - ansible_facts.services['firewalld.service'].state == 'running'
 # NOTE: Not using firewalld module
 # - name: Open DNS ports - firewalld
 #   when:
