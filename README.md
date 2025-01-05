@@ -12,7 +12,7 @@ None.
 
 ## Role Variables
 
-None.
+`bind_config_file:` - Path to a custom `named.conf`
 
 ## Dependencies
 
