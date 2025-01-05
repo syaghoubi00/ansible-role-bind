@@ -1,7 +1,30 @@
-- name: Add named.conf
+- name: Check if a custom config if defined
+  delegate_to: localhost
+  become: false
+  ansible.builtin.stat:
+    path: "{{ (bind_config_file if bind_config_file.startswith('/') else
+      playbook_dir + '/' + bind_config_file) }}"
+  register: config
+  when: bind_config_file is defined
+
+- name: Set configuration source
+  ansible.builtin.set_fact:
+    use_config_file: "{{ config.stat.exists | default(false) }}"
+
+- name: Add custom named.conf
+  ansible.builtin.copy:
+    src: "{{ config_stat.path }}"
+    dest: /etc/named.conf
+    mode: "0640"
+    backup: true
+  register: named_conf
+  when: use_config_file
+
+- name: Add default named.conf
   ansible.builtin.copy:
     src: "{{ ansible_os_family }}.conf"
     dest: /etc/named.conf
     mode: "0640"
     backup: true
   register: named_conf
+  when: not use_config_file
