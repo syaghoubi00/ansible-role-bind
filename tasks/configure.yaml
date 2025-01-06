@@ -26,5 +26,5 @@
     dest: /etc/named.conf
     mode: "0640"
     backup: true
-  register: named_conf
   when: not use_config_file
+  notify: Restart Bind service
