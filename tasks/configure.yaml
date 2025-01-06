@@ -13,7 +13,7 @@
 
 - name: Add custom named.conf
   ansible.builtin.copy:
-    src: "{{ config_stat.path }}"
+    src: "{{ config.stat.path }}"
     dest: /etc/named.conf
     mode: "0640"
     backup: true
