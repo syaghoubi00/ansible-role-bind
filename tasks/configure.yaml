@@ -7,9 +7,19 @@
   register: config
   when: bind_config_file is defined
 
-- name: Set configuration source
+- name: Check if a custom zone files directory is defined
+  delegate_to: localhost
+  become: false
+  ansible.builtin.stat:
+    path: "{{ (bind9_zones_dir if bind9_zones_dir.startswith('/') else
+      playbook_dir + '/' + bind9_zones_dir) }}"
+  register: zones_dir
+  when: bind9_zones_dir is defined
+
+- name: Set configuration flags
   ansible.builtin.set_fact:
     use_config_file: "{{ config.stat.exists | default(false) }}"
+    use_custom_zones: "{{ zones_dir.stat.exists | default(false) }}"
 
 - name: Add custom named.conf
   ansible.builtin.copy:
@@ -27,4 +37,24 @@
     mode: "0640"
     backup: true
   when: not use_config_file
+  notify: Restart Bind service
+
+- name: Ensure zone files directory exists
+  ansible.builtin.file:
+    path: "{{ bind9_zones_path }}"
+    state: directory
+    mode: "0770"
+    owner: "{{ bind9_user }}"
+    group: "{{ bind9_group }}"
+  when: use_custom_zones
+
+- name: Add zone files
+  ansible.builtin.copy:
+    src: "{{ zones_dir.stat.path }}"
+    dest: "{{ bind9_zones_path }}/"
+    mode: "0640"
+    owner: root
+    group: "{{ bind9_group }}"
+    backup: true
+  when: use_custom_zones
   notify: Restart Bind service
