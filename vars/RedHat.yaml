@@ -1,5 +1,4 @@
+bind_group: named
 bind_package_name: bind
-bind_utils_package_name: bind-utils
-bind9_group: named
-bind9_user: named
-bind9_zones_path: /var/named
+bind_user: named
+bind_zones_path: /var/named

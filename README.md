@@ -14,7 +14,7 @@ None.
 
 `bind_config_file:` - Path to a custom `named.conf`
 
-`bind9_zones_dir:` - Path to a directory containing zone files
+`bind_zones_dir:` - Path to a directory containing zone files
 
 ## Dependencies
 

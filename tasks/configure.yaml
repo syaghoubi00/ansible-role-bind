@@ -11,10 +11,10 @@
   delegate_to: localhost
   become: false
   ansible.builtin.stat:
-    path: "{{ (bind9_zones_dir if bind9_zones_dir.startswith('/') else
-      playbook_dir + '/' + bind9_zones_dir) }}"
+    path: "{{ (bind_zones_dir if bind_zones_dir.startswith('/') else
+      playbook_dir + '/' + bind_zones_dir) }}"
   register: zones_dir
-  when: bind9_zones_dir is defined
+  when: bind_zones_dir is defined
 
 - name: Set configuration flags
   ansible.builtin.set_fact:
@@ -41,20 +41,20 @@
 
 - name: Ensure zone files directory exists
   ansible.builtin.file:
-    path: "{{ bind9_zones_path }}"
+    path: "{{ bind_zones_path }}"
     state: directory
     mode: "0770"
-    owner: "{{ bind9_user }}"
-    group: "{{ bind9_group }}"
+    owner: "{{ bind_user }}"
+    group: "{{ bind_group }}"
   when: use_custom_zones
 
 - name: Add zone files
   ansible.builtin.copy:
     src: "{{ zones_dir.stat.path }}"
-    dest: "{{ bind9_zones_path }}/"
+    dest: "{{ bind_zones_path }}/"
     mode: "0640"
     owner: root
-    group: "{{ bind9_group }}"
+    group: "{{ bind_group }}"
     backup: true
   when: use_custom_zones
   notify: Restart Bind service
