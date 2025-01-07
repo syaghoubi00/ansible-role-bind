@@ -29,14 +29,6 @@
     backup: true
   register: named_conf
   when: use_config_file
-
-- name: Add default named.conf
-  ansible.builtin.copy:
-    src: "{{ ansible_os_family }}.conf"
-    dest: /etc/named.conf
-    mode: "0640"
-    backup: true
-  when: not use_config_file
   notify: Restart Bind service
 
 - name: Ensure zone files directory exists
